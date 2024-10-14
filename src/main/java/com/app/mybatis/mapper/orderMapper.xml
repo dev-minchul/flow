@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="order">
+	<insert id="insert" parameterType="OrderVO">
+		INSERT INTO TBL_ORDER(ID, MEMBER_ID, PRODUCT_ID, PRODUCT_COUNT)
+		VALUES(ORDER_SEQ.NEXTVAL, #{memberId}, #{productId}, #{productCount})
+	</insert>
+	
+	<select id="select" resultType="OrderDTO">
+		SELECT TBO.ID, PRODUCT_ID, PRODUCT_NAME, PRODUCT_PRICE, MEMBER_NAME,
+		MEMBER_ID, MEMBER_EMAIL, PRODUCT_COUNT, PRODUCT_COUNT * PRODUCT_PRICE AS TOTAL_PRICE
+		FROM TBL_ORDER TBO
+		JOIN TBL_MEMBER TBM
+		ON TBO.MEMBER_ID = TBM.ID
+		JOIN TBL_PRODUCT TBP 
+		ON TBO.PRODUCT_ID = TBP.ID
+		AND TBM.ID = #{memberId}
+		ORDER BY TBO.ID DESC
+	</select>
+	
+</mapper>
+
+
+
